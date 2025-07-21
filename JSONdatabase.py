@@ -64,20 +64,21 @@ class ContactsDB:
             country=country,
             gender=gender,
         )
-        self.contacts.append(
-            Contact(
-                contact_id=truncated_uuid,
-                name=name,
-                contact_number=contact_number,
-                country=country,
-                gender=gender,
-            )
+        self.contacts.append(contact)
+        print(
+            f"Contact ID {truncated_uuid} created successfully.\nContact Name: {name}"
         )
-        print(f"Contact ID {truncated_uuid} created successfully.")
         return contact
 
-    def read_contacts(self) -> Contacts:
-        return self.contacts
+    def read_contact(self, contact_id: str) -> Contacts:
+
+        for contact in self.contacts:
+
+            if contact.contact_id == contact_id:
+
+                return contact
+
+        return f"Contact ID {contact_id} does not exist"
 
     # def update_contacts(self, contact_id: str, update_parameter: UpdateParameter)-> Contacts:
     #    match update_parameter:
@@ -91,5 +92,5 @@ contact = db.create_contact(
     country=Country.JORDAN,
     gender=Gender.MALE,
 )
-print(db.read_contacts())
-print(contact)
+print(db.read_contact("AMS8"))
+print(db.read_contact(contact.contact_id))
