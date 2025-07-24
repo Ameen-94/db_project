@@ -1,3 +1,4 @@
 data/
 venv/
 *.pdf
+__pycahce__/
