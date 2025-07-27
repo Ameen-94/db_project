@@ -21,7 +21,7 @@ import pydantic
 # {"name": str, "contact_number": str, "country": enum, "gender": enum}]
 
 
-class Country(enum.Enum):
+class Country(str, enum.Enum):
     """enum to store values of countries"""
 
     JORDAN = "JORDAN"
@@ -29,7 +29,7 @@ class Country(enum.Enum):
     EGYPT = "EGYPT"
 
 
-class Gender(enum.Enum):
+class Gender(str, enum.Enum):
     """enum to store values of genders"""
 
     MALE = "MALE"
@@ -52,9 +52,6 @@ class Contacts(pydantic.BaseModel):
     # go back to the concept of factories
 
     contacts: typing.List[Contact] = pydantic.Field(default_factory=list)
-
-
-print(dir(Contacts))
 
 
 class Field(enum.Enum):
@@ -175,18 +172,23 @@ class ContactDB:
 
 
 db = ContactDB()
-contact = db.create_contact(
+contact1 = db.create_contact(
     name="Ameen Jaradat",
     contact_number="0795907266",
     country=Country.JORDAN,
     gender=Gender.MALE,
 )
-
-print(db.read_contact(contact.contact_id).__dict__)
+contact2 = db.create_contact(
+    name="Ahmad Mousa",
+    contact_number="0775907266",
+    country=Country.EGYPT,
+    gender=Gender.MALE,
+)
+print(db.read_contact(contact1.contact_id).__dict__)
 print(db.contact_count())
 
-db.update_contact(contact.contact_id, Field.CONTACT_NUMBER, "0785907266")
+db.update_contact(contact2.contact_id, Field.CONTACT_NUMBER, "0785907266")
 db.save_db("db_1")
 
-db.delete_contact(contact.contact_id)
+db.delete_contact(contact2.contact_id)
 print(db.contact_count())
